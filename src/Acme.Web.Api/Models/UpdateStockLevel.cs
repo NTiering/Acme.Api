@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Acme.Web.Api.Models
 {
-
-    public class UpdateDescription
+    public class UpdateStockLevel
     {
         [Required]
-        public string Description { get; set; }
+        [Range(0,3)]
+        public StockLevel StockLevel { get; set; }
 
         [Required]
         public Guid Id { get; set; }
 
         public void UpdateDataModel(ProductDataModel dataModel)
         {
-            dataModel.Description = Description;
+            dataModel.StockLevel = StockLevel;
         }
     }
 }

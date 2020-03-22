@@ -23,15 +23,6 @@ namespace Acme.Web.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all products
-        /// </summary>
-        [HttpGet("{pageSize}/{pageCount}")]
-        public IActionResult Get(int pageSize = 25, int pageCount = 0)
-        {
-            return Ok(_searchContext.GetByDiscount(pageCount, pageSize));
-        }
-
-        /// <summary>
         /// Gets all products , filtered by catagory
         /// </summary>
 
@@ -41,14 +32,13 @@ namespace Acme.Web.Api.Controllers
             return Ok(_searchContext.GetByCategory(catId, pageCount, pageSize));
         }
 
-
         /// <summary>
-        /// Gets a single product
+        /// Gets all products
         /// </summary>
-        [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        [HttpGet("{pageSize}/{pageCount}")]
+        public IActionResult Get(int pageSize = 25, int pageCount = 0)
         {
-            return Ok(_searchContext.Get(id));
+            return Ok(_searchContext.GetByDiscount(pageCount, pageSize));
         }
 
         /// <summary>

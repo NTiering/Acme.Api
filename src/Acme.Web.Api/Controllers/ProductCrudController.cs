@@ -1,7 +1,9 @@
 ﻿using Acme.Data.Context;
 using Acme.Data.DataModels;
+using Acme.Data.Search.Product;
 using Acme.Web.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Acme.Web.Api.Controllers
@@ -11,12 +13,22 @@ namespace Acme.Web.Api.Controllers
     public class ProductCrudController : ControllerBase
     {
         private readonly IDataContext _dataContext;
-       
-        public ProductCrudController(IDataContext dataContext)
+        private readonly ISearchContext _searchContext;
+
+        public ProductCrudController(IDataContext dataContext, ISearchContext searchContext)
         {
             _dataContext = dataContext;
+            _searchContext = searchContext;
         }
 
+        /// <summary>
+        /// Gets a single product
+        /// </summary>
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            return Ok(_searchContext.Get(id));
+        }
         /// <summary>
         /// Add a new product
         /// </summary>
@@ -58,6 +70,21 @@ namespace Acme.Web.Api.Controllers
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);
             string uri = Url.Action("GetById", new { id = dataModel.Id });
+            return Created(uri, dataModel);
+        }
+
+        /// <summary>
+        /// Update a products stock level
+        /// </summary>
+
+        [HttpPut("Updatestocklevel")]
+        public async Task<IActionResult> UpdateStockLevel(UpdateStockLevel model)
+        {
+            var dataModel = await _dataContext.Get<ProductDataModel>(model.Id);
+            if (dataModel == null) return NotFound();
+            model.UpdateDataModel(dataModel);
+            await _dataContext.Modify(dataModel, User.Identity);
+            string uri = Url.Action("GetById",  new { id = dataModel.Id });
             return Created(uri, dataModel);
         }
     }
