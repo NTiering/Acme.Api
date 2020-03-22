@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Acme.Web.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Acme.Web.Api.Controllers.ProductCrudController.Post(Acme.Web.Api.Models.AddProductModel)">
+            <summary>
+            Add a new product
+            </summary>
+            <remarks>Use /api/products/categories to get a vaild catagory</remarks>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductCrudController.UpdateDescription(Acme.Web.Api.Models.UpdateDescription)">
+            <summary>
+            Update a product description
+            </summary>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductCrudController.UpdateDiscount(Acme.Web.Api.Models.UpdateDiscount)">
+            <summary>
+            Update a product discount
+            </summary>
+        </member>
+        <member name="T:Acme.Web.Api.Controllers.ProductSearchController">
+            <summary>
+            dsfdsfsdfs
+            </summary>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductSearchController.Get(System.Int32,System.Int32)">
+            <summary>
+            Gets all products
+            </summary>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductSearchController.GetByCategory(System.Guid,System.Int32,System.Int32)">
+            <summary>
+            Gets all products , filtered by catagory
+            </summary>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductSearchController.GetById(System.Guid)">
+            <summary>
+            Gets a single product
+            </summary>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductSearchController.GetByPrice(System.Decimal,System.Decimal,System.Int32,System.Int32)">
+            <summary>
+            Gets all products between two prices
+            </summary>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductSearchController.GetCategory(System.Int32,System.Int32)">
+            <summary>
+            Gets all product catagories
+            </summary>
+        </member>
+        <member name="M:Acme.Web.Api.Controllers.ProductSearchController.GetSearch(System.String,System.Int32,System.Int32)">
+            <summary>
+            Gets all products, filtered by free text
+            </summary>
+        </member>
+    </members>
+</doc>

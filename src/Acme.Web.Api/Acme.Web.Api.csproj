@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\SMM.Web.Api</DockerfileContext>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Source\GitHub\SMM\src\Acme.Web.Api\Acme.Web.Api.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Acme.ChangeHandlers\Acme.ChangeHandlers.csproj" />
+    <ProjectReference Include="..\Acme.Data\Acme.Data.csproj" />
+    <ProjectReference Include="..\Acme.Muators\Acme.Muators.csproj" />
+    <ProjectReference Include="..\Acme.Toolkit\Acme.Toolkit.csproj" />
+  </ItemGroup>
+
+
+</Project>
