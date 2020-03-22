@@ -11,6 +11,7 @@ namespace Acme.Web.Api.Controllers
     /// Separate controllers for search and Create Update and Delete (CrUD) 
     /// mean that search operations don’t need to instantiate Crud infrastructure.
     /// </summary>
+    [ApiVersion("1.0")]
     [ApiController]
     [Route("api/products")]
     public class ProductSearchController : ControllerBase

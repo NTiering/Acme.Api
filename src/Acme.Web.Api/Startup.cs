@@ -4,6 +4,7 @@ using Acme.Muators;
 using Acme.Web.Api.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -58,6 +59,11 @@ namespace Acme.Web.Api
             services.AddDataServices();
             services.AddDataMutatorsServices();
             services.AddChangeTrackerServices();
+            services.AddApiVersioning(o =>
+            {
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1, 0);
+            });
             services.AddSwaggerGen(c =>
             {
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, "Acme.Web.Api.xml");

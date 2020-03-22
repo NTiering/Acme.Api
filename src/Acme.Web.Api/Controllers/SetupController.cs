@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Acme.Web.Api.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route("api/setup")]
     public class SetupController : ControllerBase
@@ -15,6 +16,10 @@ namespace Acme.Web.Api.Controllers
         {
             _dataContext = dataContext;
         }
+
+        /// <summary>
+        /// Sets up example data, should be run be default
+        /// </summary>
 
         [HttpGet()]
         public async Task<IActionResult> Get()

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Acme.Web.Api.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route("api/products")]
     public class ProductCrudController : ControllerBase
@@ -48,7 +49,7 @@ namespace Acme.Web.Api.Controllers
         /// </summary>
 
         [HttpPut("description")]
-        public async Task<IActionResult> UpdateDescription(UpdateDescription model)
+        public async Task<IActionResult> UpdateDescription([FromBody] UpdateDescription model)
         {
             var dataModel = await _dataContext.Get<ProductDataModel>(model.Id);
             if (dataModel == null) return NotFound();
@@ -62,8 +63,8 @@ namespace Acme.Web.Api.Controllers
         /// Update a product discount
         /// </summary>
 
-        [HttpPut("updatediscount")]
-        public async Task<IActionResult> UpdateDiscount(UpdateDiscount model)
+        [HttpPut("discount")]
+        public async Task<IActionResult> UpdateDiscount([FromBody] UpdateDiscount model)
         {
             var dataModel = await _dataContext.Get<ProductDataModel>(model.Id);
             if (dataModel == null) return NotFound();
@@ -77,8 +78,8 @@ namespace Acme.Web.Api.Controllers
         /// Update a products stock level
         /// </summary>
 
-        [HttpPut("Updatestocklevel")]
-        public async Task<IActionResult> UpdateStockLevel(UpdateStockLevel model)
+        [HttpPut("stocklevel")]
+        public async Task<IActionResult> UpdateStockLevel([FromBody] UpdateStockLevel model)
         {
             var dataModel = await _dataContext.Get<ProductDataModel>(model.Id);
             if (dataModel == null) return NotFound();
