@@ -1,6 +1,5 @@
 ﻿using Acme.Data.Context;
 using Acme.Data.DataModels;
-using Acme.Data.Search.Product;
 using Acme.Web.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,21 +13,19 @@ namespace Acme.Web.Api.Controllers
     public class ProductCrudController : ControllerBase
     {
         private readonly IDataContext _dataContext;
-        private readonly ISearchContext _searchContext;
 
-        public ProductCrudController(IDataContext dataContext, ISearchContext searchContext)
+        public ProductCrudController(IDataContext dataContext)
         {
             _dataContext = dataContext;
-            _searchContext = searchContext;
         }
 
         /// <summary>
         /// Gets a single product
         /// </summary>
         [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(_searchContext.Get(id));
+            return Ok(await _dataContext.GetModel<ProductDataModel>(id));
         }
         /// <summary>
         /// Add a new product
@@ -51,7 +48,7 @@ namespace Acme.Web.Api.Controllers
         [HttpPut("description")]
         public async Task<IActionResult> UpdateDescription([FromBody] UpdateDescription model)
         {
-            var dataModel = await _dataContext.Get<ProductDataModel>(model.Id);
+            var dataModel = await _dataContext.GetModel<ProductDataModel>(model.Id);
             if (dataModel == null) return NotFound();
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);
@@ -66,7 +63,7 @@ namespace Acme.Web.Api.Controllers
         [HttpPut("discount")]
         public async Task<IActionResult> UpdateDiscount([FromBody] UpdateDiscount model)
         {
-            var dataModel = await _dataContext.Get<ProductDataModel>(model.Id);
+            var dataModel = await _dataContext.GetModel<ProductDataModel>(model.Id);
             if (dataModel == null) return NotFound();
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);
@@ -81,7 +78,7 @@ namespace Acme.Web.Api.Controllers
         [HttpPut("stocklevel")]
         public async Task<IActionResult> UpdateStockLevel([FromBody] UpdateStockLevel model)
         {
-            var dataModel = await _dataContext.Get<ProductDataModel>(model.Id);
+            var dataModel = await _dataContext.GetModel<ProductDataModel>(model.Id);
             if (dataModel == null) return NotFound();
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);

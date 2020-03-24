@@ -9,7 +9,7 @@ namespace Acme.Data.Context
     {
         Task Add<T>(T model, IIdentity identity) where T : class, IDataModel;
 
-        Task<T> Get<T>(Guid id) where T : class, IDataModel;
+        Task<T> GetModel<T>(Guid id) where T : class, IDataModel;
 
         Task<bool> Modify<T>(T model, IIdentity identity) where T : class, IDataModel;
 
