@@ -9,8 +9,9 @@ namespace Acme.Encryption
     {
         private const string initVector = "H5dmefKm24mfTf5u";
         private const int keysize = 256;
+        private const CipherMode cipherMode = CipherMode.CBC;
 
-        public string Strategy => "RijndaelManaged";
+        public string Strategy => "RijndaelManaged-BCrypt";
 
         public string Decrypt(string cipherText, string passPhrase)
         {  
@@ -21,7 +22,7 @@ namespace Acme.Encryption
             var keyBytes = password.GetBytes(keysize / 8);
             var symmetricKey = new RijndaelManaged
             {
-                Mode = CipherMode.CBC
+                Mode = cipherMode
             };
             var decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
             var memoryStream = new MemoryStream(cipherTextBytes);
@@ -41,7 +42,7 @@ namespace Acme.Encryption
             var keyBytes = password.GetBytes(keysize / 8);
             var symmetricKey = new RijndaelManaged
             {
-                Mode = CipherMode.CBC
+                Mode = cipherMode
             };
             var encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
             var memoryStream = new MemoryStream();
