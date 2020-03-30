@@ -2,10 +2,10 @@
 
 namespace Acme.Web.Api.Config
 {
-    public class ApplicationConfigurationFactory : IApplicationConfigurationFactory
+    public class ApplicationConfigurationFactory // : IApplicationConfigurationFactory
     {
-        private string _readOnlyString;
-        private string _readWriteConnectionString;
+        private readonly string _readOnlyString;
+        private readonly string _readWriteConnectionString;
 
         public ApplicationConfigurationFactory()
         {

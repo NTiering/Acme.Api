@@ -7,15 +7,13 @@ namespace Acme.Encryption
 {
     public class EncryptionProvider : IEncryptionProvider
     {
+        private const CipherMode cipherMode = CipherMode.CBC;
         private const string initVector = "H5dmefKm24mfTf5u";
         private const int keysize = 256;
-        private const CipherMode cipherMode = CipherMode.CBC;
-
         public string Strategy => "RijndaelManaged-BCrypt";
 
         public string Decrypt(string cipherText, string passPhrase)
-        {  
-
+        {
             var initVectorBytes = Encoding.ASCII.GetBytes(initVector);
             var cipherTextBytes = Convert.FromBase64String(cipherText);
             var password = new PasswordDeriveBytes(passPhrase, null);
@@ -67,5 +65,4 @@ namespace Acme.Encryption
             return result;
         }
     }
-
 }

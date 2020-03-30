@@ -7,11 +7,11 @@ namespace Acme.Web.Api.Models
     public class UpdateStockLevel
     {
         [Required]
-        [Range(0,3)]
-        public StockLevel StockLevel { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public Guid Id { get; set; }
+        [Range(0, 3)]
+        public StockLevel StockLevel { get; set; }
 
         public void UpdateDataModel(ProductDataModel dataModel)
         {

@@ -9,7 +9,7 @@ namespace Acme.Data.DataModels
         public string Description { get; set; }
         public decimal Discount { get; set; }
 
-        public string LogDescriptorText
+        public override string LogDescriptorText
         {
             get { return $"Product {Name} Sku {Sku}"; }
         }

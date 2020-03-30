@@ -8,7 +8,7 @@ namespace Acme.Muators
         public static void AddDataMutatorsServices(this IServiceCollection serviceCollection)
         {
             var assembly = typeof(ServiceCollectionExt).Assembly;
-            var t = serviceCollection.RegisterTypes<IDataMutator>(assembly, RegisterAs.AsScoped);
+            serviceCollection.RegisterTypes<IDataMutator>(assembly, RegisterAs.AsScoped);
         }
     }
 }

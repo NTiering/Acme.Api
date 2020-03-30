@@ -14,12 +14,6 @@ namespace Acme.Web.Api
 
         public static void Main(string[] args)
         {
-            /*
-             var builder = new ConfigurationBuilder()
-        .SetBasePath(env.ContentRootPath)
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddEnvironmentVariables();
-             */
             CreateHostBuilder(args).Build().Run();
         }
     }

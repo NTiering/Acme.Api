@@ -1,9 +1,6 @@
 ﻿using Acme.Toolkit.Extensions;
 using FluentAssert;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace Acme.Toolkit.Tests.Extensions
@@ -13,13 +10,13 @@ namespace Acme.Toolkit.Tests.Extensions
         [Fact]
         public void ItCanEncryptAndDecrypt()
         {
-            // arrange 
+            // arrange
             var expected = "asdad ad asd sd as d";
             var toEncrypt = new string(expected.ToArray());
 
             var key = "afddsasSaq3242324wmcw";
-           
-            // act 
+
+            // act
             var actual = toEncrypt.EncryptText(key).DecryptText(key);
 
             // assert
@@ -34,9 +31,6 @@ namespace Acme.Toolkit.Tests.Extensions
             "C123".TakeMin(6).ShouldBeEqualTo("C123C1");
             "1".TakeMin(6).ShouldBeEqualTo("111111");
             "afddsasSaq3242324wmcw".TakeMin(21).ShouldBeEqualTo("afddsasSaq3242324wmcw");
-
         }
     }
 }
-
-        

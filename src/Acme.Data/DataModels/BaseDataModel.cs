@@ -8,5 +8,6 @@ namespace Acme.Data.DataModels
         public DateTime CreatedOn { get; set; }
         public DateTime? DeletedOn { get; set; }
         public Guid Id { get; set; }
+        public virtual string LogDescriptorText => GetType().Name;
     }
 }

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Acme.Web.Api.Models
 {
-
     public class UpdateDescription
     {
         [Required]

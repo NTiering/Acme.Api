@@ -8,7 +8,7 @@ using System;
 namespace Acme.Web.Api.Controllers
 {
     /// <summary>
-    /// Separate controllers for search and Create Update and Delete (CrUD) 
+    /// Separate controllers for search and Create Update and Delete (CrUD)
     /// mean that search operations don’t need to instantiate Crud infrastructure.
     /// </summary>
     [ApiVersion("1.0")]
@@ -27,12 +27,6 @@ namespace Acme.Web.Api.Controllers
         /// Gets all products , filtered by catagory
         /// </summary>
 
-        [HttpGet("category/{catId}/{pageSize?}/{pageCount?}")]
-        public IActionResult GetByCategory(Guid catId, int pageSize = 25, int pageCount = 0)
-        {
-            return Ok(_searchContext.GetByCategory(catId, pageCount, pageSize));
-        }
-
         /// <summary>
         /// Gets all products
         /// </summary>
@@ -40,6 +34,12 @@ namespace Acme.Web.Api.Controllers
         public IActionResult Get(int pageSize = 25, int pageCount = 0)
         {
             return Ok(_searchContext.GetByDiscount(pageCount, pageSize));
+        }
+
+        [HttpGet("category/{catId}/{pageSize?}/{pageCount?}")]
+        public IActionResult GetByCategory(Guid catId, int pageSize = 25, int pageCount = 0)
+        {
+            return Ok(_searchContext.GetByCategory(catId, pageCount, pageSize));
         }
 
         /// <summary>
@@ -65,7 +65,6 @@ namespace Acme.Web.Api.Controllers
         {
             return Ok(_searchContext.GetCategories(pageCount, pageSize));
         }
-
 
         /// <summary>
         /// Gets all products, filtered by free text

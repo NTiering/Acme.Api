@@ -8,9 +8,9 @@ namespace Acme.Data.Context
     {
         private readonly EntityFrameworkDataTools _dataTools;
 
-        public SearchContext(IApplicationConfigurationFactory configurationFactory)
+        public SearchContext(IApplicationConfiguration configuration)
         {
-            _dataTools = new EntityFrameworkDataTools(configurationFactory.Config.ReadOnlyString);
+            _dataTools = new EntityFrameworkDataTools(configuration.ReadOnlyString);
         }
 
         public DbSet<ProductCategoryDataModel> ProductCategories => _dataTools.ProductCategories;

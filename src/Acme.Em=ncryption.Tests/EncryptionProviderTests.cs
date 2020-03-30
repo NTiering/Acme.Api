@@ -6,16 +6,11 @@ namespace Acme.Encryption.Tests
     public class EncryptionProviderTests
     {
         private static readonly string salt = "E$$$_ sdsf ";
-        [Fact]
-        public void ReturnsStrategy()
-        {
-            new EncryptionProvider().Strategy.ShouldNotBeNull();
-        }
 
         [Fact]
-        public void Encrypts()
+        public void CanHash()
         {
-            new EncryptionProvider().Encrypt("Some Text HereLook",salt).ShouldNotBeNull();
+            new EncryptionProvider().Hash("SomeTextHere").ShouldNotBeEqualTo("SomeTextHere");
         }
 
         [Fact]
@@ -26,9 +21,9 @@ namespace Acme.Encryption.Tests
         }
 
         [Fact]
-        public void CanHash()
+        public void Encrypts()
         {
-            new EncryptionProvider().Hash("SomeTextHere").ShouldNotBeEqualTo("SomeTextHere");
+            new EncryptionProvider().Encrypt("Some Text HereLook", salt).ShouldNotBeNull();
         }
 
         [Fact]
@@ -38,6 +33,12 @@ namespace Acme.Encryption.Tests
             var result = new EncryptionProvider().Verify("SomeTextHere", hash1);
 
             result.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void ReturnsStrategy()
+        {
+            new EncryptionProvider().Strategy.ShouldNotBeNull();
         }
     }
 }

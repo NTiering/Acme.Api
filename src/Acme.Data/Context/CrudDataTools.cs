@@ -8,32 +8,30 @@ namespace Acme.Data.Context
 {
     public class CrudDataTools : ICrudDataTools
     {
-        private readonly IApplicationConfigurationFactory _configurationFactory;
+        private readonly IApplicationConfiguration _configuration;
 
-        public CrudDataTools(IApplicationConfigurationFactory configurationFactory)
+        public CrudDataTools(IApplicationConfiguration configuration)
         {
-            _configurationFactory = configurationFactory;
+            _configuration = configuration;
         }
-
-        private string _connectionstring => _configurationFactory.Config.ReadWriteConnectionString;
-
+    
         public async Task AddModel<T>(T model) where T : class, IDataModel
         {
-            using var ctx = new EntityFrameworkDataTools(_connectionstring);
+            using var ctx = new EntityFrameworkDataTools(_configuration.ReadWriteConnectionString);
             await ctx.AddAsync(model);
             await ctx.SaveChangesAsync();
         }
 
         public async Task<T> GetModel<T>(Guid id) where T : class, IDataModel
         {
-            using var ctx = new EntityFrameworkDataTools(_connectionstring);
+            using var ctx = new EntityFrameworkDataTools(_configuration.ReadWriteConnectionString);
             var rtn = await ctx.FindAsync<T>(id);
             return rtn;
         }
 
         public async Task ModifyModel<T>(T original, T model) where T : class, IDataModel
         {
-            using var ctx = new EntityFrameworkDataTools(_connectionstring);
+            using var ctx = new EntityFrameworkDataTools(_configuration.ReadWriteConnectionString);
             ctx.Attach(model);
             ctx.Entry(model).State = EntityState.Modified;
             await ctx.SaveChangesAsync();
@@ -41,7 +39,7 @@ namespace Acme.Data.Context
 
         public async Task RemoveModel<T>(Guid id) where T : class, IDataModel
         {
-            using var ctx = new EntityFrameworkDataTools(_connectionstring);
+            using var ctx = new EntityFrameworkDataTools(_configuration.ReadWriteConnectionString);
             var model = await ctx.FindAsync<T>(id);
             ctx.Remove(model);
             await ctx.SaveChangesAsync();

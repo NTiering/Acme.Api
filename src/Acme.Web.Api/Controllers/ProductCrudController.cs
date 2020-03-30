@@ -27,6 +27,7 @@ namespace Acme.Web.Api.Controllers
         {
             return Ok(await _dataContext.GetModel<ProductDataModel>(id));
         }
+
         /// <summary>
         /// Add a new product
         /// </summary>
@@ -82,7 +83,7 @@ namespace Acme.Web.Api.Controllers
             if (dataModel == null) return NotFound();
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);
-            string uri = Url.Action("GetById",  new { id = dataModel.Id });
+            string uri = Url.Action("GetById", new { id = dataModel.Id });
             return Created(uri, dataModel);
         }
     }
