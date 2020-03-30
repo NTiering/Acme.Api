@@ -23,6 +23,16 @@ namespace Acme.Web.Api.Controllers
             _searchContext = searchContext;
         }
 
+
+        /// <summary>
+        /// Gets a single product
+        /// </summary>
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            return Ok(_searchContext.Get(id));
+        }
+
         /// <summary>
         /// Gets all products , filtered by catagory
         /// </summary>

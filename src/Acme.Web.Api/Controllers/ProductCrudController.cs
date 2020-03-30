@@ -20,15 +20,6 @@ namespace Acme.Web.Api.Controllers
         }
 
         /// <summary>
-        /// Gets a single product
-        /// </summary>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            return Ok(await _dataContext.GetModel<ProductDataModel>(id));
-        }
-
-        /// <summary>
         /// Add a new product
         /// </summary>
         /// <remarks>Use /api/products/categories to get a vaild catagory</remarks>
