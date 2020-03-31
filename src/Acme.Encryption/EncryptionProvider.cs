@@ -58,11 +58,5 @@ namespace Acme.Encryption
             var result = BCrypt.Net.BCrypt.HashPassword(value);
             return result;
         }
-
-        public bool Verify(string value, string hash)
-        {
-            var result = BCrypt.Net.BCrypt.Verify(value, hash);
-            return result;
-        }
     }
 }
