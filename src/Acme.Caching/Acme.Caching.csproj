@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Description>Caching Framework</Description>
+    <PackageId>Acme.Caching</PackageId>
+    <Authors>Acme.Caching</Authors>
+    <Company>Acme.Caching</Company>
+    <Product>Acme.Caching</Product>
+    <Version>2.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Acme.Toolkit\Acme.Toolkit.csproj" />
+  </ItemGroup>
+
+</Project>

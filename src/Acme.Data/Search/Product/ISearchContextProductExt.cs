@@ -110,7 +110,6 @@ namespace Acme.Data.Search.Product
             return rtn;
         }
 
-
         private static ProductDataModel FindOne(ISearchContext search, Guid id)
         {
             return search.Products.FirstOrDefault(x => x.Id == id && x.DeletedOn == null);

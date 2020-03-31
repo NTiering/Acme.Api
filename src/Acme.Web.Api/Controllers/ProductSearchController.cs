@@ -1,7 +1,9 @@
-﻿using Acme.Data.Context;
+﻿using Acme.Caching;
+using Acme.Data.Context;
 using Acme.Data.DataModels;
 using Acme.Data.Search.Product;
 using Acme.Data.Search.ProductCatagory;
+using Acme.Web.Api.Ext;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -17,10 +19,12 @@ namespace Acme.Web.Api.Controllers
     public class ProductSearchController : ControllerBase
     {
         private readonly ISearchContext _searchContext;
+        private ICacheProvider _cacheProvider;
 
-        public ProductSearchController(ISearchContext searchContext)
+        public ProductSearchController(ISearchContext searchContext, ICacheProvider cacheProvider)
         {
             _searchContext = searchContext;
+            _cacheProvider = cacheProvider;
         }
 
         /// <summary>
@@ -47,13 +51,18 @@ namespace Acme.Web.Api.Controllers
         [HttpGet("{pageSize}/{pageCount}")]
         public IActionResult Get(int pageSize = 25, int pageCount = 0)
         {
-            return Ok(_searchContext.GetByDiscount(pageCount, pageSize));
+            var result = _cacheProvider.Get(Request.Path.ToCacheKey(), () => // example of in memory cache, use on smaller sites only
+            {
+                 return _searchContext.GetByDiscount(pageCount, pageSize); // called only if the cache fails
+            },
+            CacheDuration.Short);
+
+            return Ok(result);
         }
 
         /// <summary>
         /// Gets all products in a category
         /// </summary>
-
         [HttpGet("category/{catId}/{pageSize?}/{pageCount?}")]
         public IActionResult GetByCategory(Guid catId, int pageSize = 25, int pageCount = 0)
         {

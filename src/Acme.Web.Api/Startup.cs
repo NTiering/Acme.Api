@@ -1,6 +1,7 @@
 using Acme.ChangeHandlers;
 using Acme.Data;
 using Acme.Muators;
+using Acme.Caching;
 using Acme.Web.Api.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +58,7 @@ namespace Acme.Web.Api
         {
             services.AddControllers();
             services.AddDataServices();
+            services.AddCaching();
             services.AddDataMutatorsServices();
             services.AddChangeTrackerServices();
             services.AddApiVersioning(o =>
