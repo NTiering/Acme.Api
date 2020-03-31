@@ -23,7 +23,6 @@ namespace Acme.Web.Api.Controllers
             _searchContext = searchContext;
         }
 
-
         /// <summary>
         /// Gets a single product
         /// </summary>
@@ -34,8 +33,13 @@ namespace Acme.Web.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all products , filtered by catagory
+        /// Gets a single product, with optional data tacked on
         /// </summary>
+        [HttpGet("{id}/withreviews")]
+        public IActionResult GetByIdWithReviews(Guid id)
+        {
+            return Ok(_searchContext.GetWithReviews(id));
+        }
 
         /// <summary>
         /// Gets all products
@@ -45,6 +49,10 @@ namespace Acme.Web.Api.Controllers
         {
             return Ok(_searchContext.GetByDiscount(pageCount, pageSize));
         }
+
+        /// <summary>
+        /// Gets all products in a category
+        /// </summary>
 
         [HttpGet("category/{catId}/{pageSize?}/{pageCount?}")]
         public IActionResult GetByCategory(Guid catId, int pageSize = 25, int pageCount = 0)
@@ -61,8 +69,11 @@ namespace Acme.Web.Api.Controllers
             return Ok(_searchContext.GetByPrice(min, max, pageCount, pageSize));
         }
 
+        /// <summary>
+        /// Gets all products by stock level        
+        /// </summary>
         [HttpGet("stocklevel/{stockLevel}/{pageSize?}/{pageCount?}")]
-        public IActionResult GetBySockLevel(StockLevel stockLevel, int pageSize = 25, int pageCount = 0)
+        public IActionResult GetByStockLevel(StockLevel stockLevel, int pageSize = 25, int pageCount = 0)
         {
             return Ok(_searchContext.GetByStockLevels(new[] { stockLevel }, pageCount, pageSize));
         }

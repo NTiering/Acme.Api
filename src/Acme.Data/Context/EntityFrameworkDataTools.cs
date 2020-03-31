@@ -15,7 +15,7 @@ namespace Acme.Data.Context
         public DbSet<ProductCategoryDataModel> ProductCategories { get; set; }
         public DbSet<ProductDataModel> Products { get; set; }
         public DbSet<LogEntryDataModel> Logs { get; set; }
-        
+        public DbSet<ProductReviewDataModel> ProductReviews { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -40,6 +40,14 @@ namespace Acme.Data.Context
             modelBuilder.Entity<ProductDataModel>()
             .HasIndex(x => x.CategoryId)
             .HasName("IX_Products_CategoryId");
+
+            modelBuilder.Entity<ProductReviewDataModel>()
+            .HasIndex(x => x.ProductId)
+            .HasName("IX_ProductReviews_ProductId");
+
+            modelBuilder.Entity<ProductReviewDataModel>()
+            .HasIndex(x => x.Score)
+            .HasName("IX_ProductReviews_Score");
         }
     }
 }
