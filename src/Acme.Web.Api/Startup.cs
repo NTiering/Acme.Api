@@ -73,8 +73,8 @@ namespace Acme.Web.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Acme.Web", Version = "v1" });
             });
 
-            var acf = new ApplicationConfigurationFactory();
-            services.AddSingleton<IApplicationConfiguration>(acf.Config);
+            var acf = new ConfigurationFactory();
+            services.AddSingleton<IApplicationConfiguration>(acf.ApplicationConfig);
         }
     }
 }
