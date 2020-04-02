@@ -2,7 +2,6 @@
 using Acme.Data.DataModels;
 using Acme.Web.Api.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace Acme.Web.Api.Controllers

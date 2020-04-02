@@ -1,5 +1,5 @@
-﻿using Acme.Toolkit.Extensions;
-using FluentAssert;
+﻿using Acme.Tests;
+using Acme.Toolkit.Extensions;
 using System;
 using Xunit;
 

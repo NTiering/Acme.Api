@@ -52,7 +52,7 @@ namespace Acme.Web.Api.Config
                     {
                         ReviewText = $"review for {gloveProduct.Name}, not nice",
                         ProductId = gloveProduct.Id,
-                        Score = rnd.Next(1,3)
+                        Score = rnd.Next(1, 3)
                     };
                     await dataContext.Add(reviewBad, identity);
 
@@ -60,7 +60,7 @@ namespace Acme.Web.Api.Config
                     {
                         ReviewText = $"review for {gloveProduct.Name}, just Ok",
                         ProductId = gloveProduct.Id,
-                        Score = rnd.Next(4,8)
+                        Score = rnd.Next(4, 8)
                     };
                     await dataContext.Add(reviewOk, identity);
 
@@ -68,7 +68,7 @@ namespace Acme.Web.Api.Config
                     {
                         ReviewText = $"review for {gloveProduct.Name}, very good",
                         ProductId = gloveProduct.Id,
-                        Score = rnd.Next(9,10)
+                        Score = rnd.Next(9, 10)
                     };
                     await dataContext.Add(reviewGood, identity);
                 }
@@ -153,8 +153,6 @@ namespace Acme.Web.Api.Config
                     await dataContext.Add(reviewGood, identity);
                 }
             }
-
-            
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Acme.Data.Context;
 using Acme.Data.DataModels;
 using Acme.Data.Search.Product;
-using FluentAssert;
+using Acme.Tests;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;

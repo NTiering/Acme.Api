@@ -2,7 +2,6 @@
 
 namespace Acme.Data.Search.Product
 {
-
     public class ProductSearchResult
     {
         public Guid ProductCategoryId { get; internal set; }

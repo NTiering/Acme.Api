@@ -1,7 +1,6 @@
 ﻿using Acme.Data.DataModels;
 using Acme.Web.Api.Config;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Acme.Data.Context
 {
@@ -15,9 +14,7 @@ namespace Acme.Data.Context
         }
 
         public DbSet<ProductCategoryDataModel> ProductCategories => _dataTools.ProductCategories;
-        public DbSet<ProductDataModel> Products => _dataTools.Products;
         public DbSet<ProductReviewDataModel> ProductReviews => _dataTools.ProductReviews;
-
-
+        public DbSet<ProductDataModel> Products => _dataTools.Products;
     }
 }

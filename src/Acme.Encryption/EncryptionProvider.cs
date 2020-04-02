@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Acme.Toolkit.Extensions;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,56 +9,98 @@ namespace Acme.Encryption
 {
     public class EncryptionProvider : IEncryptionProvider
     {
-        private const CipherMode cipherMode = CipherMode.CBC;
-        private const string initVector = "H5dmefKm24mfTf5u";
-        private const int keysize = 256;
-        public string Strategy => "RijndaelManaged-BCrypt";
+        public string Strategy => "SHA512";
 
-        public string Decrypt(string cipherText, string passPhrase)
+        public string Decrypt(string value, string key)
         {
-            var initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-            var cipherTextBytes = Convert.FromBase64String(cipherText);
-            var password = new PasswordDeriveBytes(passPhrase, null);
-            var keyBytes = password.GetBytes(keysize / 8);
-            var symmetricKey = new RijndaelManaged
+            value.ThrowIfNullOrEmpty(nameof(value));
+
+            var combined = Convert.FromBase64String(value);
+            var buffer = new byte[combined.Length];
+            var hash = new SHA512CryptoServiceProvider();
+            var aesKey = new byte[24];
+            Buffer.BlockCopy(hash.ComputeHash(Encoding.UTF8.GetBytes(key)), 0, aesKey, 0, 24);
+
+            using (var aes = Aes.Create())
             {
-                Mode = cipherMode
-            };
-            var decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
-            var memoryStream = new MemoryStream(cipherTextBytes);
-            var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            var plainTextBytes = new byte[cipherTextBytes.Length];
-            int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-            memoryStream.Close();
-            cryptoStream.Close();
-            return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+                if (aes == null)
+                    throw new ArgumentException("Parameter must not be null.", nameof(aes));
+
+                aes.Key = aesKey;
+
+                var iv = new byte[aes.IV.Length];
+                var ciphertext = new byte[buffer.Length - iv.Length];
+
+                Array.ConstrainedCopy(combined, 0, iv, 0, iv.Length);
+                Array.ConstrainedCopy(combined, iv.Length, ciphertext, 0, ciphertext.Length);
+
+                aes.IV = iv;
+
+                using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
+                using (var resultStream = new MemoryStream())
+                {
+                    using (var aesStream = new CryptoStream(resultStream, decryptor, CryptoStreamMode.Write))
+                    using (var plainStream = new MemoryStream(ciphertext))
+                    {
+                        plainStream.CopyTo(aesStream);
+                    }
+
+                    return Encoding.UTF8.GetString(resultStream.ToArray());
+                }
+            }
         }
 
-        public string Encrypt(string plainText, string passPhrase)
+        public string Encrypt(string text, string key)
         {
-            var initVectorBytes = Encoding.UTF8.GetBytes(initVector);
-            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            var password = new PasswordDeriveBytes(passPhrase, null);
-            var keyBytes = password.GetBytes(keysize / 8);
-            var symmetricKey = new RijndaelManaged
+            key.ThrowIfNullOrEmpty(nameof(key));
+            text.ThrowIfNullOrEmpty(nameof(text));
+
+            var buffer = Encoding.UTF8.GetBytes(text);
+            var hash = new SHA512CryptoServiceProvider();
+            var aesKey = new byte[24];
+            Buffer.BlockCopy(hash.ComputeHash(Encoding.UTF8.GetBytes(key)), 0, aesKey, 0, 24);
+
+            using var aes = Aes.Create();
+            aes.ThrowIfNull("AES");
+
+            aes.Key = aesKey;
+
+            using (var encryptor = aes.CreateEncryptor(aes.Key, aes.IV))
+            using (var resultStream = new MemoryStream())
             {
-                Mode = cipherMode
-            };
-            var encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
-            var memoryStream = new MemoryStream();
-            var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
-            cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-            cryptoStream.FlushFinalBlock();
-            var cipherTextBytes = memoryStream.ToArray();
-            memoryStream.Close();
-            cryptoStream.Close();
-            return Convert.ToBase64String(cipherTextBytes);
+                using (var aesStream = new CryptoStream(resultStream, encryptor, CryptoStreamMode.Write))
+                using (var plainStream = new MemoryStream(buffer))
+                {
+                    plainStream.CopyTo(aesStream);
+                }
+
+                var result = resultStream.ToArray();
+                var combined = new byte[aes.IV.Length + result.Length];
+                Array.ConstrainedCopy(aes.IV, 0, combined, 0, aes.IV.Length);
+                Array.ConstrainedCopy(result, 0, combined, aes.IV.Length, result.Length);
+
+                return Convert.ToBase64String(combined);
+            }
         }
 
         public string Hash(string value)
         {
-            var result = BCrypt.Net.BCrypt.HashPassword(value);
-            return result;
+            value.ThrowIfNullOrEmpty(nameof(value));
+
+            byte[] salt = new byte[128 / 8];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: value,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            return hashed;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Acme.Data.Context
         {
             _configuration = configuration;
         }
-    
+
         public async Task AddModel<T>(T model) where T : class, IDataModel
         {
             using var ctx = new EntityFrameworkDataTools(_configuration.ReadWriteConnectionString);

@@ -1,20 +1,10 @@
-﻿using Acme.Encryption;
+﻿using System;
 using System.Linq;
 
 namespace Acme.Toolkit.Extensions
 {
     public static class StringExt
     {
-        public static string DecryptText(this string value, string key)
-        {
-            return new EncryptionProvider().Decrypt(value, key.TakeMin(21));
-        }
-
-        public static string EncryptText(this string value, string key)
-        {
-            return new EncryptionProvider().Encrypt(value, key.TakeMin(21));
-        }
-
         public static string TakeMin(this string item, int count)
         {
             var value = new string(item.ToArray());
@@ -31,6 +21,14 @@ namespace Acme.Toolkit.Extensions
                 }
 
                 return value.Substring(0, count);
+            }
+        }
+
+        public static void ThrowIfNullOrEmpty(this string s, string parameterName)
+        {
+            if (string.IsNullOrWhiteSpace(s) || string.IsNullOrEmpty(s))
+            {
+                throw new ArgumentNullException(parameterName);
             }
         }
     }

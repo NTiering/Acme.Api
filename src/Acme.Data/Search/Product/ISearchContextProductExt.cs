@@ -17,7 +17,6 @@ namespace Acme.Data.Search.Product
             var rtn = ToSearchResult<ProductSearchResult>(search, prd);
             return rtn;
         }
-        
 
         public static PaginatedResult<ProductSearchResult> GetByCategory(this ISearchContext search, Guid catId, int pageCount, int pageSize)
         {
@@ -83,41 +82,41 @@ namespace Acme.Data.Search.Product
             return rtn;
         }
 
-        public static bool IsSkuInUse(this ISearchContext search, string sku)
-        {
-            var rtn = search.Products.Any(x => x.Sku == sku);
-            return rtn;
-        }
-
         public static ProductReviewSearchResult GetWithReviews(this ISearchContext search, Guid productId)
         {
             var timer = new SearchTimer();
 
             var prd = FindOne(search, productId);
             if (prd == null) return null;
-           
+
             var rtn = ToSearchResult<ProductReviewSearchResult>(search, prd);
             var reviews = search.ProductReviews
                 .Where(x => x.ProductId == productId)
-                .Where(x=>x.DeletedOn == null)
-                .OrderBy(x=>x.Score);
+                .Where(x => x.DeletedOn == null)
+                .OrderBy(x => x.Score);
 
             rtn.ReviewAverage = reviews.Average(x => x.Score);
             rtn.ReviewCount = reviews.Count();
             rtn.TopResults = reviews.Take(3).Select(x => ToReviewSearchResult(x));
-            rtn.BottomResults = reviews.Skip(reviews.Count()-3).Take(3).Select(x=> ToReviewSearchResult(x));
+            rtn.BottomResults = reviews.Skip(reviews.Count() - 3).Take(3).Select(x => ToReviewSearchResult(x));
 
             return rtn;
         }
 
-        private static ProductDataModel FindOne(ISearchContext search, Guid id)
+        public static bool IsSkuInUse(this ISearchContext search, string sku)
         {
-            return search.Products.FirstOrDefault(x => x.Id == id && x.DeletedOn == null);
+            var rtn = search.Products.Any(x => x.Sku == sku);
+            return rtn;
         }
 
         private static IQueryable<ProductDataModel> ElligibleProducts(this DbSet<ProductDataModel> products)
         {
             return products.Where(x => x.DeletedOn == null || x.DeletedOn > DateTime.Now);
+        }
+
+        private static ProductDataModel FindOne(ISearchContext search, Guid id)
+        {
+            return search.Products.FirstOrDefault(x => x.Id == id && x.DeletedOn == null);
         }
 
         private static PaginatedResult<ProductSearchResult> ToPaginatedResult(ISearchContext search, int pageCount, int pageSize, long duration, IOrderedQueryable<ProductDataModel> results)
@@ -134,8 +133,20 @@ namespace Acme.Data.Search.Product
             return rtn;
         }
 
+        private static ReviewSearchResult ToReviewSearchResult(ProductReviewDataModel model)
+        {
+            var rtn = new ReviewSearchResult
+            {
+                ReviewText = model.ReviewText,
+                Score = model.Score,
+                CreatedOn = model.CreatedOn
+            };
+
+            return rtn;
+        }
+
         private static T ToSearchResult<T>(ISearchContext search, ProductDataModel prd)
-            where T : ProductSearchResult,new()
+                    where T : ProductSearchResult, new()
         {
             var rtn = new T
             {
@@ -156,17 +167,6 @@ namespace Acme.Data.Search.Product
             return rtn;
         }
 
-        private static ReviewSearchResult ToReviewSearchResult(ProductReviewDataModel model)
-        {
-            var rtn = new ReviewSearchResult
-            {
-                ReviewText = model.ReviewText,
-                Score = model.Score , 
-                CreatedOn = model.CreatedOn
-            };
-
-            return rtn;
-        }
         private static string ToStockLevelText(StockLevel stockLevel)
         {
             switch (stockLevel)

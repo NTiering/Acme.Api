@@ -9,6 +9,5 @@
         public string Encrypt(string value, string key);
 
         public string Hash(string value);
-
     }
 }

@@ -10,6 +10,5 @@ namespace Acme.Caching
             var assembly = typeof(ServiceCollectionExt).Assembly;
             serviceCollection.RegisterTypes<ICacheProvider>(assembly, RegisterAs.AsSingleton);
         }
-        
     }
 }

@@ -12,10 +12,10 @@ namespace Acme.Data.Context
             _connectionString = connectionString;
         }
 
-        public DbSet<ProductCategoryDataModel> ProductCategories { get; set; }
-        public DbSet<ProductDataModel> Products { get; set; }
         public DbSet<LogEntryDataModel> Logs { get; set; }
+        public DbSet<ProductCategoryDataModel> ProductCategories { get; set; }
         public DbSet<ProductReviewDataModel> ProductReviews { get; set; }
+        public DbSet<ProductDataModel> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

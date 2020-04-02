@@ -4,17 +4,27 @@ using System;
 
 namespace Acme.Caching
 {
-
     public class CacheProvider : IDisposable, ICacheProvider
     {
         private readonly IMemoryCache memoryCache;
+
         public CacheProvider()
         {
             memoryCache = new MemoryCache(new DefaultOptions());
         }
 
+        public void Dispose()
+        {
+            memoryCache.Dispose();
+        }
+
+        public void Expire(string key)
+        {
+            memoryCache.Remove(key);
+        }
+
         public T Get<T>(string key, Func<T> onCacheExpire, CacheDuration cacheDuration)
-            where T : class
+                            where T : class
         {
             return TryGetValue(key, onCacheExpire, (int)cacheDuration);
         }
@@ -23,16 +33,6 @@ namespace Acme.Caching
             where T : class
         {
             return TryGetValue(key, onCacheExpire, durationInMins);
-        }
-
-        public void Expire(string key)
-        {
-            memoryCache.Remove(key);
-        }
-
-        public void Dispose()
-        {
-            memoryCache.Dispose();
         }
 
         private T TryGetValue<T>(string key, Func<T> onCacheExpire, int duration) where T : class
@@ -45,7 +45,7 @@ namespace Acme.Caching
             return rtn;
         }
 
-        class DefaultOptions : IOptions<MemoryCacheOptions>
+        private class DefaultOptions : IOptions<MemoryCacheOptions>
         {
             public DefaultOptions()
             {

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssert;
+﻿using FluentAssert;
+using System;
 using Xunit;
 
 namespace Acme.Encryption.Tests
@@ -9,6 +8,19 @@ namespace Acme.Encryption.Tests
     {
         private IEncryptionProvider EncryptionProvider = new EncryptionProvider();
         private string password = "some passowrd";
+
+        [Fact]
+        public void ItCanDecrypt()
+        {
+            var encrypted = EncryptionProvider.Encrypt("Some string", password);
+            EncryptionProvider.Decrypt(encrypted, password).ShouldBeEqualTo("Some string");
+        }
+
+        [Fact]
+        public void ItCanEncrypt()
+        {
+            EncryptionProvider.Encrypt("Some string", password).ShouldNotBeEmpty();
+        }
 
         [Fact]
         public void ItCanHash()
@@ -22,19 +34,6 @@ namespace Acme.Encryption.Tests
             var hash = EncryptionProvider.Hash("Some string");
 
             EncryptionProvider.Hash("Some string").ShouldNotBeEqualTo(hash);
-        }
-        
-        [Fact]
-        public void ItCanEncrypt()
-        {
-            EncryptionProvider.Encrypt("Some string", password).ShouldNotBeEmpty();
-        }
-
-        [Fact]
-        public void ItCanDecrypt()
-        {
-            var encrypted = EncryptionProvider.Encrypt("Some string", password);
-            EncryptionProvider.Decrypt(encrypted, password).ShouldBeEqualTo("Some string");
         }
 
         [Fact]
@@ -53,6 +52,5 @@ namespace Acme.Encryption.Tests
 
             ex.ShouldNotBeNull();
         }
-
     }
 }

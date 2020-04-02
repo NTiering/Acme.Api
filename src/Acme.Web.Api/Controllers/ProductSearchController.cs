@@ -28,6 +28,30 @@ namespace Acme.Web.Api.Controllers
         }
 
         /// <summary>
+        /// Gets all products
+        /// </summary>
+        [HttpGet("{pageSize}/{pageCount}")]
+        public IActionResult Get(int pageSize = 25, int pageCount = 0)
+        {
+            var result = _cacheProvider.Get(Request.Path.ToCacheKey(), () => // example of in memory cache, use on smaller sites only
+            {
+                return _searchContext.GetByDiscount(pageCount, pageSize); // called only if the cache fails
+            },
+            CacheDuration.Short);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Gets all products in a category
+        /// </summary>
+        [HttpGet("category/{catId}/{pageSize?}/{pageCount?}")]
+        public IActionResult GetByCategory(Guid catId, int pageSize = 25, int pageCount = 0)
+        {
+            return Ok(_searchContext.GetByCategory(catId, pageCount, pageSize));
+        }
+
+        /// <summary>
         /// Gets a single product
         /// </summary>
         [HttpGet("{id}")]
@@ -46,30 +70,6 @@ namespace Acme.Web.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all products
-        /// </summary>
-        [HttpGet("{pageSize}/{pageCount}")]
-        public IActionResult Get(int pageSize = 25, int pageCount = 0)
-        {
-            var result = _cacheProvider.Get(Request.Path.ToCacheKey(), () => // example of in memory cache, use on smaller sites only
-            {
-                 return _searchContext.GetByDiscount(pageCount, pageSize); // called only if the cache fails
-            },
-            CacheDuration.Short);
-
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Gets all products in a category
-        /// </summary>
-        [HttpGet("category/{catId}/{pageSize?}/{pageCount?}")]
-        public IActionResult GetByCategory(Guid catId, int pageSize = 25, int pageCount = 0)
-        {
-            return Ok(_searchContext.GetByCategory(catId, pageCount, pageSize));
-        }
-
-        /// <summary>
         /// Gets all products between two prices
         /// </summary>
         [HttpGet("price/{min}/{max}/{pageSize?}/{pageCount?}")]
@@ -79,7 +79,7 @@ namespace Acme.Web.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all products by stock level        
+        /// Gets all products by stock level
         /// </summary>
         [HttpGet("stocklevel/{stockLevel}/{pageSize?}/{pageCount?}")]
         public IActionResult GetByStockLevel(StockLevel stockLevel, int pageSize = 25, int pageCount = 0)

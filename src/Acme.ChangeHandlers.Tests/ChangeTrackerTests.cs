@@ -1,5 +1,5 @@
 ﻿using Acme.ChangeHandlers;
-using FluentAssert;
+using Acme.Tests;
 using Moq;
 using System;
 using System.Security.Principal;
@@ -8,13 +8,13 @@ using Xunit;
 
 namespace Acme.Data.Tests.ChangeTrackerTests
 {
-    public class ChangeTrackerTest
+    public class ChangeTrackerTests
     {
         private IChangeTracker _changeTracker;
         private MockIChangeEventHandler mockIChangeEventHandlerOne;
         private MockIChangeEventHandler mockIChangeEventHandlerTwo;
 
-        public ChangeTrackerTest()
+        public ChangeTrackerTests()
         {
             mockIChangeEventHandlerOne = new MockIChangeEventHandler();
             mockIChangeEventHandlerTwo = new MockIChangeEventHandler();

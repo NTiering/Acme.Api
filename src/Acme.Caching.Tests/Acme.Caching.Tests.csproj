@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0-preview-20200318-01" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Acme.Caching\Acme.Caching.csproj" />
+    <ProjectReference Include="..\Acme.Tests\Acme.Tests.csproj" />
   </ItemGroup>
 
 </Project>

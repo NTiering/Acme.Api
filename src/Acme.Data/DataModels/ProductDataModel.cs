@@ -3,13 +3,6 @@ using System;
 
 namespace Acme.Data.DataModels
 {
-    public class ProductReviewDataModel : BaseDataModel, ICreatedOn
-    {
-        public int Score { get; set; }
-        public string ReviewText { get; set; }
-        public Guid ProductId { get; set; }
-    }
-
     public class ProductDataModel : BaseDataModel, ICreatedOn, ILoggable
     {
         public Guid CategoryId { get; set; }
@@ -41,5 +34,12 @@ namespace Acme.Data.DataModels
         {
             return HashCode.Combine(Sku, Name, Description, Price, Discount, CategoryId);
         }
+    }
+
+    public class ProductReviewDataModel : BaseDataModel, ICreatedOn
+    {
+        public Guid ProductId { get; set; }
+        public string ReviewText { get; set; }
+        public int Score { get; set; }
     }
 }

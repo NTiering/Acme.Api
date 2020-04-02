@@ -1,4 +1,5 @@
 using Acme.Caching;
+using Acme.Tests;
 using Moq;
 using System;
 using Xunit;
@@ -7,9 +8,8 @@ namespace MMU.BusSys.Caching.UnitTests
 {
     public class CacheProviderTests : IDisposable
     {
-        private readonly MockRepository mockRepository;
         private static readonly string cacheKey = "SOME-KEY";
-
+        private readonly MockRepository mockRepository;
 
         public CacheProviderTests()
         {
@@ -20,58 +20,6 @@ namespace MMU.BusSys.Caching.UnitTests
         {
             mockRepository.VerifyAll();
         }
-
-
-        [Fact]
-        public void GetReturnsFunctionResult()
-        {
-            // Arrange
-            var entry = new MockCacheEntry();
-            MockCacheEntry result;
-            MockCacheEntry onCacheExpire() { return entry; }
-
-            using (var provider = new CacheProvider())
-            {
-                // Act
-                result = provider.Get(
-                     cacheKey,
-                     onCacheExpire,
-                     CacheDuration.Short);
-            }
-
-            // Assert
-            Assert.Equal(result.Id, entry.Id);
-        }
-
-        [Fact]
-        public void GetReturnsCachedValue()
-        {
-            // Arrange
-            var entry = new MockCacheEntry();
-            MockCacheEntry result;
-            MockCacheEntry onCacheExpireResult() { return entry; }
-            MockCacheEntry onCacheExpireThrowException() { throw new Exception(); }
-
-            using (var provider = new CacheProvider())
-            {
-                // First call
-                provider.Get(
-                     cacheKey,
-                     onCacheExpireResult,
-                     CacheDuration.Short);
-
-                // Act
-                result = provider.Get(
-                     cacheKey,
-                     onCacheExpireThrowException,
-                     CacheDuration.Short);
-            }
-
-            // Assert
-            Assert.Equal(result.Id, entry.Id);
-        }
-
-
 
         [Fact]
         public void ExpiresRemovesCachedValue()
@@ -101,17 +49,66 @@ namespace MMU.BusSys.Caching.UnitTests
             }
 
             // Assert
-            Assert.Equal(result.Id, entry2.Id);
+            result.Id.ShouldBeEqualTo(entry2.Id);
+        }
+
+        [Fact]
+        public void GetReturnsCachedValue()
+        {
+            // Arrange
+            var entry = new MockCacheEntry();
+            MockCacheEntry result;
+            MockCacheEntry onCacheExpireResult() { return entry; }
+            MockCacheEntry onCacheExpireThrowException() { throw new Exception(); }
+
+            using (var provider = new CacheProvider())
+            {
+                // First call
+                provider.Get(
+                     cacheKey,
+                     onCacheExpireResult,
+                     CacheDuration.Short);
+
+                // Act
+                result = provider.Get(
+                     cacheKey,
+                     onCacheExpireThrowException,
+                     CacheDuration.Short);
+            }
+
+            // Assert
+            result.Id.ShouldBeEqualTo(entry.Id);
+        }
+
+        [Fact]
+        public void GetReturnsFunctionResult()
+        {
+            // Arrange
+            var entry = new MockCacheEntry();
+            MockCacheEntry result;
+            MockCacheEntry onCacheExpire() { return entry; }
+
+            using (var provider = new CacheProvider())
+            {
+                // Act
+                result = provider.Get(
+                     cacheKey,
+                     onCacheExpire,
+                     CacheDuration.Short);
+            }
+
+            // Assert
+            result.Id.ShouldBeEqualTo(entry.Id);
         }
 
         public class MockCacheEntry
         {
-            public string Id { get; set; }
-
             public MockCacheEntry()
             {
                 Id = Guid.NewGuid().ToString();
             }
+
+            public string Id { get; set; }
         }
     }
 }

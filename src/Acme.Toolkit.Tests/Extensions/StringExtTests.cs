@@ -1,28 +1,11 @@
-﻿using Acme.Toolkit.Extensions;
-using FluentAssert;
-using System.Linq;
+﻿using Acme.Tests;
+using Acme.Toolkit.Extensions;
 using Xunit;
 
 namespace Acme.Toolkit.Tests.Extensions
 {
     public class StringExtTests
     {
-        [Fact]
-        public void ItCanEncryptAndDecrypt()
-        {
-            // arrange
-            var expected = "asdad ad asd sd as d";
-            var toEncrypt = new string(expected.ToArray());
-
-            var key = "afddsasSaq3242324wmcw";
-
-            // act
-            var actual = toEncrypt.EncryptText(key).DecryptText(key);
-
-            // assert
-            actual.ShouldBeEqualTo(expected);
-        }
-
         [Fact]
         public void TakeMinWorks()
         {
