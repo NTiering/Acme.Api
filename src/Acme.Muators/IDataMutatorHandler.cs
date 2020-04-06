@@ -8,6 +8,6 @@
 
         void BeforeRemove(object oldState, IDataMutatorContext ctx);
 
-        bool CanHandle(IDataMutatorContext type);
+        bool CanHandle(IDataMutatorContext ctx);
     }
 }

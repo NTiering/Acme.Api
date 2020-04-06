@@ -12,6 +12,11 @@ namespace Acme.Tests
             Assert.Equal(original, testSubject);
         }
 
+        public static void ShouldNotBeEqualTo<T>(this T original, T testSubject)
+        {
+            Assert.NotEqual(original, testSubject);
+        }
+
         public static void ShouldBeFalse(this bool i)
         {
             Assert.False(i);
@@ -39,6 +44,12 @@ namespace Acme.Tests
         {
             Assert.NotNull(i);
         }
+
+        public static void ShouldNotBeEmpty(this string i)
+        {
+            Assert.NotEmpty(i);
+        }
+        
 
         public static void ShouldNotContain<T>(this IEnumerable<T> item, T expected)
                     where T : class
