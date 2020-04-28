@@ -1,5 +1,8 @@
 ﻿using Acme.Data.DataModels;
+using Acme.Data.DataModels.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace Acme.Data.Context
 {
@@ -48,6 +51,6 @@ namespace Acme.Data.Context
             modelBuilder.Entity<ProductReviewDataModel>()
             .HasIndex(x => x.Score)
             .HasName("IX_ProductReviews_Score");
-        }
+        }        
     }
 }

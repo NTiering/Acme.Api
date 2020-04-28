@@ -11,7 +11,7 @@ namespace Acme.Web.Api.Validation
         {
             var catId = (Guid)value;
             var service = validationContext.GetService(typeof(ISearchContext)) as ISearchContext;
-            if (service.ProductCategories.Any(x => x.Id == catId == false))
+            if (service.ProductCategories.Any(x => x.Id == catId) == false)
             {
                 return new ValidationResult($"Not a valid category Id");
             }

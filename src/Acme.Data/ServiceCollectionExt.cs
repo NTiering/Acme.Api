@@ -12,11 +12,10 @@ namespace Acme.Data
         {
             var assembly = typeof(ServiceCollectionExt).Assembly;
 
-            serviceCollection.RegisterTypes<IChangeEventHandler>(assembly, RegisterAs.AsScoped);
             serviceCollection.RegisterTypes<ICrudDataTools>(assembly, RegisterAs.AsScoped);
-            serviceCollection.RegisterTypes<IDataMutatorHandler>(assembly, RegisterAs.AsScoped);
             serviceCollection.RegisterTypes<IDataContext>(assembly, RegisterAs.AsScoped);
             serviceCollection.RegisterTypes<ISearchContext>(assembly, RegisterAs.AsScoped);
+            serviceCollection.RegisterTypes<IDataMutatorHandler>(assembly, RegisterAs.AsScoped);
         }
     }
 }

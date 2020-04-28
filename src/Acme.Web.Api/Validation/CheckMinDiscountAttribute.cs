@@ -1,5 +1,5 @@
 ﻿using Acme.Data.Context;
-using Acme.Data.Search.Product;
+using Acme.Products.Search;
 using Acme.Web.Api.Models;
 using System.ComponentModel.DataAnnotations;
 

@@ -1,8 +1,7 @@
 ﻿using Acme.Caching;
 using Acme.Data.Context;
 using Acme.Data.DataModels;
-using Acme.Data.Search.Product;
-using Acme.Data.Search.ProductCatagory;
+using Acme.Products.Search;
 using Acme.Web.Api.Ext;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -48,7 +47,7 @@ namespace Acme.Web.Api.Controllers
         [HttpGet("category/{catId}/{pageSize?}/{pageCount?}")]
         public IActionResult GetByCategory(Guid catId, int pageSize = 25, int pageCount = 0)
         {
-            return Ok(_searchContext.GetByCategory(catId, pageCount, pageSize));
+            return this.OkOrNotFound(_searchContext.GetByCategory(catId, pageCount, pageSize));
         }
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace Acme.Web.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_searchContext.Get(id));
+            return this.OkOrNotFound(_searchContext.Get(id));
         }
 
         /// <summary>
@@ -66,7 +65,13 @@ namespace Acme.Web.Api.Controllers
         [HttpGet("{id}/withreviews")]
         public IActionResult GetByIdWithReviews(Guid id)
         {
-            return Ok(_searchContext.GetWithReviews(id));
+            var result = _cacheProvider.Get($"productwithreview_{id}", () => // example of in memory cache, use on smaller sites only
+            {
+                return _searchContext.GetWithReviews(id); // called only if the cache fails
+            },
+            CacheDuration.Short);
+
+            return this.OkOrNotFound(_searchContext.GetWithReviews(id));
         }
 
         /// <summary>

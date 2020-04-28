@@ -1,11 +1,12 @@
 ﻿using Acme.Data.Context;
 using Acme.Data.DataModels;
+using Acme.Data.Search;
 using Acme.Toolkit.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace Acme.Data.Search.ProductCatagory
+namespace Acme.Products.Search
 {
     public static class ISearchContextProductCategoryExt
     {

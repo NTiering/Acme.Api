@@ -1,11 +1,12 @@
 ﻿using Acme.Data.Context;
 using Acme.Data.DataModels;
+using Acme.Data.Search;
 using Acme.Toolkit.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace Acme.Data.Search.Product
+namespace Acme.Products.Search
 {
     public static class ISearchContextProductExt
     {
@@ -14,7 +15,7 @@ namespace Acme.Data.Search.Product
             var prd = FindOne(search, id);
 
             if (prd == null) return null;
-            var rtn = ToSearchResult<ProductSearchResult>(search, prd);
+            var rtn = ToSearchResult(search, prd);
             return rtn;
         }
 
@@ -89,19 +90,23 @@ namespace Acme.Data.Search.Product
             var prd = FindOne(search, productId);
             if (prd == null) return null;
 
-            var rtn = ToSearchResult<ProductReviewSearchResult>(search, prd);
             var reviews = search.ProductReviews
                 .Where(x => x.ProductId == productId)
                 .Where(x => x.DeletedOn == null)
                 .OrderBy(x => x.Score);
 
-            rtn.ReviewAverage = reviews.Average(x => x.Score);
-            rtn.ReviewCount = reviews.Count();
-            rtn.TopResults = reviews.Take(3).Select(x => ToReviewSearchResult(x));
-            rtn.BottomResults = reviews.Skip(reviews.Count() - 3).Take(3).Select(x => ToReviewSearchResult(x));
-
+            var rtn = new ProductReviewSearchResult
+            {
+                Product = ToSearchResult(search, prd),
+                ReviewAverage = reviews.Average(x => x.Score),
+                ReviewCount = reviews.Count(),
+                TopResults = reviews.Take(3).Select(x => ToReviewSearchResult(x)),
+                BottomResults = reviews.Skip(reviews.Count() - 3).Take(3).Select(x => ToReviewSearchResult(x))
+            };
             return rtn;
         }
+
+
 
         public static bool IsSkuInUse(this ISearchContext search, string sku)
         {
@@ -127,7 +132,7 @@ namespace Acme.Data.Search.Product
                 pageCount: pageCount,
                 searchDuration: duration,
                 totalResults: results.Count(),
-                items: results.Paginate(pageCount, pageSize).Select(x => ToSearchResult<ProductSearchResult>(search, x))
+                items: results.Paginate(pageCount, pageSize).Select(x => ToSearchResult(search, x))
             );
 
             return rtn;
@@ -145,10 +150,9 @@ namespace Acme.Data.Search.Product
             return rtn;
         }
 
-        private static T ToSearchResult<T>(ISearchContext search, ProductDataModel prd)
-                    where T : ProductSearchResult, new()
+        private static ProductSearchResult ToSearchResult(ISearchContext search, ProductDataModel prd)
         {
-            var rtn = new T
+            var rtn = new ProductSearchResult
             {
                 ProductId = prd.Id,
                 ProductSku = prd.Sku,

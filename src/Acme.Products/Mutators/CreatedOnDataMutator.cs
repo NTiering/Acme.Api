@@ -1,11 +1,11 @@
 ﻿using Acme.Data.DataModels.Contracts;
 using Acme.Muators;
 using Acme.Toolkit.Extensions;
-using System;
 using System.Linq;
 
-namespace Acme.Data.Mutators
+namespace Acme.Products.Mutators
 {
+
     public class CreatedOnDataMutator : IDataMutatorHandler
     {
         public void BeforeAdd(object subject, IDataMutatorContext context)

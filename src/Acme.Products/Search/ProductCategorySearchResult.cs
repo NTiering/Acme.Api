@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Acme.Data.Search.ProductCatagory
+namespace Acme.Products.Search
 {
     public class ProductCategorySearchResult
     {

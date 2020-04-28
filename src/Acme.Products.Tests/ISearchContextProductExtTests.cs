@@ -1,6 +1,6 @@
 ﻿using Acme.Data.Context;
 using Acme.Data.DataModels;
-using Acme.Data.Search.Product;
+using Acme.Products.Search;
 using Acme.Tests;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Acme.Data.Tests.Search.Product
+namespace Acme.Products.Tests
 {
     public class ISearchContextProductExtTests
     {

@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Security.Principal;
 
-namespace Acme.Data.ChangeHandlers
+namespace Acme.Products.ChangeEvent
 {
     public class LogEntryChangeHandler : IChangeEventHandler
     {

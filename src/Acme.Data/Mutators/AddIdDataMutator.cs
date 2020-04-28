@@ -1,4 +1,5 @@
-﻿using Acme.Data.DataModels.Contracts;
+﻿using Acme.Data.DataModels;
+using Acme.Data.DataModels.Contracts;
 using Acme.Muators;
 using Acme.Toolkit.Extensions;
 using System;
@@ -6,15 +7,17 @@ using System.Linq;
 
 namespace Acme.Data.Mutators
 {
-    public class CreatedOnDataMutator : IDataMutatorHandler
+    public class AddIdDataMutator : IDataMutatorHandler
     {
         public void BeforeAdd(object subject, IDataMutatorContext context)
         {
             subject.ThrowIfNull(nameof(subject));
             context.ThrowIfNull(nameof(context));
 
-            var s = subject as ICreatedOn;
-            s.CreatedOn = context.RequestedOn;
+            if ((subject is BaseDataModel s) && (s.Id == Guid.Empty))
+            {
+                s.Id = Guid.NewGuid();
+            }
         }
 
         public void BeforeModify(object oldState, object newState, IDataMutatorContext context)

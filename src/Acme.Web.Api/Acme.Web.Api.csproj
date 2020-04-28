@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Acme.ChangeHandlers\Acme.ChangeHandlers.csproj" />
     <ProjectReference Include="..\Acme.Data\Acme.Data.csproj" />
     <ProjectReference Include="..\Acme.Muators\Acme.Muators.csproj" />
+    <ProjectReference Include="..\Acme.Products\Acme.Products.csproj" />
     <ProjectReference Include="..\Acme.Toolkit\Acme.Toolkit.csproj" />
   </ItemGroup>
 

@@ -24,11 +24,11 @@ namespace Acme.Web.Api.Controllers
         /// <remarks>Use /api/products/categories to get a vaild catagory</remarks>
 
         [HttpPost]
-        public IActionResult Post([FromBody] AddProductModel model)
+        public async Task<IActionResult> Post([FromBody] AddProductModel model)
         {
             var dataModel = model.ToDataModel();
-            _dataContext.Add(dataModel, User.Identity);
-            string uri = Url.Action("GetById", new { id = dataModel.Id });
+            await _dataContext.Add(dataModel, User.Identity);
+            var uri = $"api/products/{dataModel.Id}";
             return Created(uri, dataModel);
         }
 
@@ -43,7 +43,7 @@ namespace Acme.Web.Api.Controllers
             if (dataModel == null) return NotFound();
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);
-            string uri = Url.Action("GetById", new { id = dataModel.Id });
+            var uri = $"api/products/{dataModel.Id}";
             return Created(uri, dataModel);
         }
 
@@ -58,7 +58,7 @@ namespace Acme.Web.Api.Controllers
             if (dataModel == null) return NotFound();
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);
-            string uri = Url.Action("GetById", new { id = dataModel.Id });
+            var uri = $"api/products/{dataModel.Id}";
             return Created(uri, dataModel);
         }
 
@@ -73,7 +73,7 @@ namespace Acme.Web.Api.Controllers
             if (dataModel == null) return NotFound();
             model.UpdateDataModel(dataModel);
             await _dataContext.Modify(dataModel, User.Identity);
-            string uri = Url.Action("GetById", new { id = dataModel.Id });
+            var uri = $"api/products/{dataModel.Id}";
             return Created(uri, dataModel);
         }
     }

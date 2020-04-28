@@ -1,5 +1,5 @@
 ﻿using Acme.Data.Context;
-using Acme.Data.Search.Product;
+using Acme.Products.Search;
 using Acme.Web.Api.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,7 +16,7 @@ namespace Acme.Web.Api.Validation
 
             if (isInUse)
             {
-                return new ValidationResult($"Sku {isInUse} is in use");
+                return new ValidationResult($"Sku {validationModel.Sku} is in use");
             }
 
             return ValidationResult.Success;
